@@ -1,0 +1,91 @@
+/* Nulstil standard-afstande, så vi selv styrer layoutet */
+/* * = "alle elementer" på siden */
+* {
+    margin: 0;               /* Fjern browserens standard-afstand UDENFOR elementer */
+    padding: 0;              /* Fjern browserens standard-afstand INDENI elementer */
+    box-sizing: border-box;  /* Padding og border tælles MED i bredden – gør størrelser meget nemmere at regne med */
+}
+
+/* Mørk "gaming" baggrund og en pæn skrifttype på hele siden */
+body {
+    /* Prøver skrifttyperne i rækkefølge – den første computeren har, bliver brugt */
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* Glidende overgang mellem to mørke farver – 160deg er retningen (skråt nedad) */
+    background: linear-gradient(160deg, #0f0f1a 0%, #1a1a2e 100%);
+    color: #e0e0e0;          /* Standard tekstfarve: lys grå (ikke helt hvid, mere behagelig for øjnene) */
+    min-height: 100vh;       /* Mindst hele skærmens højde (vh = viewport height), så baggrunden dækker hele vejen ned */
+    padding: 3rem 1.5rem;    /* 3rem top/bund, 1.5rem venstre/højre – rem = i forhold til standard skriftstørrelse (16px) */
+}
+
+/* Sidens hovedoverskrift */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;   /* Luft mellem overskriften og kortene */
+    color: #ffffff;
+    letter-spacing: 2px;     /* Lidt ekstra luft mellem bogstaverne */
+    text-transform: uppercase; /* Viser teksten med STORE BOGSTAVER, uden at ændre HTML'en */
+}
+
+/* Containeren: et grid der selv laver så mange kolonner, der er plads til (responsivt) */
+/* # = vælg efter id – skal matche id="Games" i HTML'en præcist (stort G) */
+#Games {
+    display: grid;
+    /* auto-fill = lav så mange kolonner som muligt
+       minmax(250px, 1fr) = hver kolonne er mindst 250px, og deler resten af pladsen ligeligt (1fr = én del)
+       Derfor bliver det 1 kolonne på mobil og 3-4 på en stor skærm – helt uden media queries */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;             /* Afstand mellem kortene */
+    max-width: 1100px;       /* Bliver ikke bredere end dette på store skærme */
+    margin: 0 auto;          /* auto til venstre og højre = centrerer containeren på siden */
+}
+
+/* Hvert spil-kort */
+/* . = vælg efter class – matcher class="game-card" fra JavaScript'en */
+.game-card {
+    background: #232340;
+    border: 1px solid #34345c;
+    border-radius: 12px;     /* Runde hjørner */
+    padding: 1.5rem;         /* Luft mellem kortets kant og indholdet */
+    /* Gør ændringerne ved hover bløde i stedet for at hoppe – 0.2s = hvor lang tid animationen tager */
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Kortet løfter sig og lyser op, når musen er over det */
+.game-card:hover {
+    transform: translateY(-6px); /* Flyt kortet 6px OP (minus = op på y-aksen) */
+    border-color: #7c5cff;       /* Lilla kant */
+    /* Skygge: 0 vandret, 10px nedad, 25px sløring, lilla farve med 25% synlighed (0.25) */
+    box-shadow: 0 10px 25px rgba(124, 92, 255, 0.25);
+}
+
+/* Spillets titel */
+/* ".game-card h2" = kun h2'ere der ligger INDENI et game-card (ikke alle h2'ere på siden) */
+.game-card h2 {
+    font-size: 1.4rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;     /* Luft mellem titlen og stregen under den */
+    border-bottom: 1px solid #34345c; /* Tynd streg under titlen */
+}
+
+/* Info-linjerne (genre, udgivet, multiplayer) */
+.game-card p {
+    font-size: 0.95rem;
+    color: #b0b0c8;              /* Lidt mørkere end titlen, så titlen skiller sig ud */
+    margin-bottom: 0.5rem;
+}
+
+/* Den sidste linje er rating – den får en "badge"-stil, så den skiller sig ud */
+/* :last-child = det SIDSTE element inde i kortet – virker kun fordi rating står sidst i JS'ens HTML */
+/* Hvis du flytter rating-linjen i script.js, flytter badge-stilen med til en anden linje! */
+.game-card p:last-child {
+    display: inline-block;       /* Gør baggrunden kun så bred som teksten (ikke hele kortets bredde) */
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    padding: 0.35rem 0.8rem;     /* Luft rundt om teksten i badgen */
+    background: #7c5cff;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 20px;         /* Meget runde hjørner = "pille"-form */
+}
